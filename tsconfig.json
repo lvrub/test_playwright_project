@@ -1,11 +1,11 @@
 {
     "compilerOptions": {
-        "target": "es6",
-        "module": "commonjs",
-        "moduleResolution": "Node",
-        "sourceMap": true,
-        "outDir": "../tests-out",
+"baseUrl": ".",
+      "paths": {
+        "@config" :["playwright.config"],
+        "@objects/*":["pageObjects/*"]
+      }
+
     },
-  "scripts": {
-  }
+
 }

@@ -1,13 +1,10 @@
-import { test, expect, Locator } from '@playwright/test';
-import * as dotenv from 'dotenv';
-import LoginPage from '../pageObjects/LoginPage';
-import MainPage from '../pageObjects/MainPage';
-dotenv.config();
+import { test} from '@playwright/test';
+import LoginPage from "@objects/LoginPage";
+import MainPage from '@objects/MainPage';
 
 const baseURL = process.env.URL;
 const email = process.env.EMAIL;
 const password = process.env.PASSWORD;
-
 
 test('succesfull authorization', async ({ page }) => {
   const loginP = new LoginPage(page);
@@ -18,7 +15,6 @@ test('succesfull authorization', async ({ page }) => {
   await loginP.typePassword(password)
   await loginP.clickButtonLogIn();
   await mainP.checkToolBar();
-
 });
 
 
@@ -42,4 +38,5 @@ test('failed authorization, empty password', async ({ page }) => {
     await loginP.typePassword(password)
     await loginP.clickButtonLogIn();
     await loginP.verifyLabelWrongCredentials();
+    await loginP.verifyLabelEmailOutlined();
   });

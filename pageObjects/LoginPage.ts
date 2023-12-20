@@ -7,6 +7,7 @@ class LoginPage {
     private readonly labelWrongCredentials: Locator;
     private readonly labelPassword: Locator;
     private readonly labelEmail: Locator;
+    private readonly labelPasswordOutlined: Locator;
 
 
 
@@ -17,7 +18,8 @@ class LoginPage {
         this.inputPassword = page.locator("#input-2");
         this.buttonLogIn = page.locator("//button[normalize-space(.)='Log in']");
         this.labelWrongCredentials = page.locator('.v-messages');
-        this.labelPassword = page.locator("(//label[.='Password'])[1]");
+        this.labelPassword = page.locator("//div[contains(@class, '_field')]//label[.='Password']");
+        this.labelPasswordOutlined = page.locator("//div[contains(@class, '_outline')]//label[.='Password']");
         this.labelEmail = page.locator("(//label[.='Email'])[1]");
     }
 
@@ -49,8 +51,9 @@ class LoginPage {
         this.verifyColorFailedLabel(this.labelPassword);
     }
 
-    async verifyColorFailedEmail() {
-        this.verifyColorFailedLabel(this.labelPassword);
+    async verifyLabelEmailOutlined() {
+        this.labelPasswordOutlined.waitFor({state:'visible'});
+        expect(this.labelPasswordOutlined).toBeVisible();
     }
 }
 
