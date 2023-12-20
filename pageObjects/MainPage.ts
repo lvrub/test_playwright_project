@@ -11,7 +11,7 @@ class MainPage {
 
     async checkToolBar() {
         await this.toolBar.waitFor({ state: "visible" });
-        expect(this.toolBar).toBeVisible();
+        await expect(this.toolBar).toBeVisible();
     }
 }
 

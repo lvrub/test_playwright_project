@@ -22,12 +22,24 @@ test('succesfull authorization', async ({ page }) => {
 });
 
 
-test('failed authorization', async ({ page }) => {
+test('failed authorization, empty password', async ({ page }) => {
     const loginP = new LoginPage(page);
   
     await page.goto(baseURL);
     await loginP.typeEmail(email);
     await loginP.typePassword("")
+    await loginP.clickButtonLogIn();
+    await loginP.verifyLabelWrongCredentials();
+    await loginP.verifyColorFailedPassword();
+  });
+
+
+  test('failed authorization, wrong email', async ({ page }) => {
+    const loginP = new LoginPage(page);
+  
+    await page.goto(baseURL);
+    await loginP.typeEmail("email");
+    await loginP.typePassword(password)
     await loginP.clickButtonLogIn();
     await loginP.verifyLabelWrongCredentials();
   });
