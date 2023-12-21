@@ -1,26 +1,26 @@
 import { Locator, Page, expect } from "playwright/test";
 
 class LoginPage {
+    private readonly page : Page;
     private readonly inputEmail: Locator;
     private readonly inputPassword: Locator;
     private readonly buttonLogIn: Locator;
     private readonly labelWrongCredentials: Locator;
     private readonly labelPassword: Locator;
-    private readonly labelEmail: Locator;
-    private readonly labelPasswordOutlined: Locator;
+    private readonly labelEmailOutlined: Locator;
 
 
 
 
 
     constructor(page: Page) {
+        this.page = page;
         this.inputEmail = page.locator("#input-0");
         this.inputPassword = page.locator("#input-2");
         this.buttonLogIn = page.locator("//button[normalize-space(.)='Log in']");
         this.labelWrongCredentials = page.locator('.v-messages');
         this.labelPassword = page.locator("//div[contains(@class, '_field')]//label[.='Password']");
-        this.labelPasswordOutlined = page.locator("//div[contains(@class, '_outline')]//label[.='Password']");
-        this.labelEmail = page.locator("(//label[.='Email'])[1]");
+        this.labelEmailOutlined = page.locator("//div[contains(@class, '_outline')]//label[.='E-mail']");
     }
 
     //methods for controls
@@ -44,7 +44,7 @@ class LoginPage {
     }
 
     private async verifyColorFailedLabel(label: Locator) {
-        expect(label).toHaveCSS('color', "rgb(176, 0, 32)");
+        await expect(label).toHaveCSS('color', "rgb(176, 0, 32)");
     }
 
     async verifyColorFailedPassword() {
@@ -52,9 +52,16 @@ class LoginPage {
     }
 
     async verifyLabelEmailOutlined() {
-        this.labelPasswordOutlined.waitFor({state:'visible'});
-        expect(this.labelPasswordOutlined).toBeVisible();
+        expect(this.labelEmailOutlined).toBeVisible();
     }
+
+    async login(email: string, password: string) {
+        await this.page.goto('/');
+        await this.typeEmail(email);
+        await this.typePassword(password)
+        await this.clickButtonLogIn();
+    }
+
 }
 
 export default LoginPage;

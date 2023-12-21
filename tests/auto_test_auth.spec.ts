@@ -1,8 +1,8 @@
-import { test} from '@playwright/test';
+import { test } from '@playwright/test';
 import LoginPage from "@objects/LoginPage";
 import MainPage from '@objects/MainPage';
+import DriversPage from '@objects/DriversPage';
 
-const baseURL = process.env.URL;
 const email = process.env.EMAIL;
 const password = process.env.PASSWORD;
 
@@ -10,33 +10,34 @@ test('succesfull authorization', async ({ page }) => {
   const loginP = new LoginPage(page);
   const mainP = new MainPage(page);
 
-  await page.goto(baseURL);
-  await loginP.typeEmail(email);
-  await loginP.typePassword(password)
-  await loginP.clickButtonLogIn();
+  await loginP.login(email, password)
   await mainP.checkToolBar();
 });
 
 
 test('failed authorization, empty password', async ({ page }) => {
-    const loginP = new LoginPage(page);
-  
-    await page.goto(baseURL);
-    await loginP.typeEmail(email);
-    await loginP.typePassword("")
-    await loginP.clickButtonLogIn();
-    await loginP.verifyLabelWrongCredentials();
-    await loginP.verifyColorFailedPassword();
-  });
+  const loginP = new LoginPage(page);
+
+  await loginP.login(email, "")
+  await loginP.verifyLabelWrongCredentials();
+  await loginP.verifyColorFailedPassword();
+});
 
 
-  test('failed authorization, wrong email', async ({ page }) => {
-    const loginP = new LoginPage(page);
-  
-    await page.goto(baseURL);
-    await loginP.typeEmail("email");
-    await loginP.typePassword(password)
-    await loginP.clickButtonLogIn();
-    await loginP.verifyLabelWrongCredentials();
-    await loginP.verifyLabelEmailOutlined();
-  });
+test('failed authorization, wrong email', async ({ page }) => {
+  const loginP = new LoginPage(page);
+
+  await loginP.login("email", password)
+  await loginP.verifyLabelWrongCredentials();
+  await loginP.verifyLabelEmailOutlined();
+});
+
+
+test('check table contains data', async ({ page }) => {
+  const loginP = new LoginPage(page);
+  const driverP = new DriversPage(page);
+
+  await loginP.login(email, password);
+  await driverP.navigateToDriversPage();
+  await driverP.verifyTableData()
+});
