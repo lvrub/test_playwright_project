@@ -1,1 +1,1 @@
-Use next comand to run all tests : npm run test
+Use next command to run all tests for TMS : npm run test
