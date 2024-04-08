@@ -1,43 +1,42 @@
-import { test } from '@playwright/test';
-import LoginPage from "@objects/LoginPage";
-import MainPage from '@objects/MainPage';
-import DriversPage from '@objects/DriversPage';
+// import { test } from '@playwright/test';
+import { test } from '@fix/pageFactory';
+import {faker}  from '@faker-js/faker';
 
 const email = process.env.EMAIL;
 const password = process.env.PASSWORD;
 
-test('succesfull authorization', async ({ page }) => {
-  const loginP = new LoginPage(page);
-  const mainP = new MainPage(page);
+test('succesfull authorization', async ({ loginPage, mainPage }) => {
+  // const loginP = new LoginPage(page);
+  // const mainPage = new MainPage(page);
 
-  await loginP.login(email, password)
-  await mainP.checkToolBar();
+  await loginPage.login(email, password)
+  await mainPage.checkToolBar();
 });
 
 
-test('failed authorization, empty password', async ({ page }) => {
-  const loginP = new LoginPage(page);
+test('failed authorization, empty password', async ({ loginPage }) => {
+  // const loginPage = new LoginPage(page);
 
-  await loginP.login(email, "")
-  await loginP.verifyLabelWrongCredentials();
-  await loginP.verifyColorFailedPassword();
+  await loginPage.login(email, "")
+  await loginPage.verifyLabelWrongCredentials();
+  await loginPage.verifyColorFailedPassword();
 });
 
 
-test('failed authorization, wrong email', async ({ page }) => {
-  const loginP = new LoginPage(page);
+test('failed authorization, wrong email', async ({ loginPage }) => {
+  // const loginPage = new LoginPage(page);
 
-  await loginP.login("email", password)
-  await loginP.verifyLabelWrongCredentials();
-  await loginP.verifyLabelEmailOutlined();
+  await loginPage.login(faker.animal.cat(), password)
+  await loginPage.verifyLabelWrongCredentials();
+  await loginPage.verifyLabelEmailOutlined();
 });
 
 
-test('check table contains data', async ({ page }) => {
-  const loginP = new LoginPage(page);
-  const driverP = new DriversPage(page);
+test('check table contains data', async ({ loginPage, driversPage }) => {
+  // const loginPage = new LoginPage(page);
+  // const driverP = new DriversPage(page);
 
-  await loginP.login(email, password);
-  await driverP.navigateToDriversPage();
-  await driverP.verifyTableData()
+  await loginPage.login(email, password);
+  await driversPage.navigateToDriversPage();
+  await driversPage.verifyTableData()
 });
